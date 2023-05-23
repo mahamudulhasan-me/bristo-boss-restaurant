@@ -12,9 +12,11 @@ const Header = () => {
       <li>
         <Link>Dashboard</Link>
       </li>
-      <li>
-        <Link>Our Menu</Link>
-      </li>
+
+      <Link to={"./our-menu"}>
+        <li>Our Menu</li>
+      </Link>
+
       <li>
         <Link>Our Shop</Link>
       </li>
