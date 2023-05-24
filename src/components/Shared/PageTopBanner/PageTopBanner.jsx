@@ -1,9 +1,9 @@
 import React from "react";
-import banner from "../../../assets/menu/banner3.jpg";
+
 const PagesTopBanner = ({ image, title, subtitle }) => {
   return (
     <div
-      style={{ backgroundImage: `url(${banner})` }}
+      style={{ backgroundImage: `url(${image})` }}
       className="bg-cover flex justify-center items-center p-20"
     >
       <div className="w-4/5 mt-20 py-24 text-center text-white font-cinzel  bg-slate-950 bg-opacity-40">

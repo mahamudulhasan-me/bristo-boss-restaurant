@@ -12,7 +12,7 @@ const OfferMenu = ({ menuItems }) => {
           <MenuItem key={menu._id} menuDetails={menu} />
         ))}
 
-        <PrimaryBtn />
+        <PrimaryBtn>ORDER YOUR FAVORITE FOOD</PrimaryBtn>
       </div>
     </div>
   );
