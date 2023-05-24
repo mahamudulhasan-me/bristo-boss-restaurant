@@ -1,21 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
+import { FaAngleDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
 const Header = () => {
+  const [openMenu, setOpenMenu] = useState(false);
   const navItems = (
     <>
       <li>
         <Link>Home</Link>
       </li>
+      <Link to={"./our-menu"}>
+        <li>Our Menu</li>
+      </Link>
+      <Link to={"./shop/pizza"}>
+        <li
+          onMouseOver={() => setOpenMenu(true)}
+          className=" group relative flex justify-start items-start"
+        >
+          <span className="flex group">
+            Shop
+            <FaAngleDown />
+          </span>
+          <div
+            onClick={() => setOpenMenu(false)}
+            onMouseLeave={() => setOpenMenu(false)}
+          >
+            {openMenu && (
+              <ul className="sub-menu">
+                <Link to={"./shop/pizza"}>
+                  <li>Pizza</li>
+                </Link>
+                <Link to={"./shop/salad"}>
+                  <li>Salad</li>
+                </Link>
+                <Link to={"./shop/soup"}>
+                  <li>Soup</li>
+                </Link>
+                <Link to={"./shop/dessert"}>
+                  <li>Dessert</li>
+                </Link>
+                <Link to={"./shop/drinks"}>
+                  <li>Drinks</li>
+                </Link>
+              </ul>
+            )}
+          </div>
+        </li>
+      </Link>
       <li>
         <Link>Contact Us</Link>
       </li>
       <li>
         <Link>Dashboard</Link>
       </li>
-
-      <Link to={"./our-menu"}>
-        <li>Our Menu</li>
-      </Link>
 
       <li>
         <Link>Our Shop</Link>
@@ -60,9 +96,6 @@ const Header = () => {
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="my-menu menu-horizontal space-x-2">{navItems}</ul>
-        </div>
-        <div className="navbar-end">
-          <a className="btn">Get started</a>
         </div>
       </div>
     </div>

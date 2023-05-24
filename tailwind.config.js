@@ -7,6 +7,9 @@ module.exports = {
         cinzel: ["Cinzel", "serif"],
         inter: ["Inter", "sans-serif"],
       },
+      colors: {
+        yell: "#d1a054",
+      },
     },
   },
   plugins: [require("daisyui")],
