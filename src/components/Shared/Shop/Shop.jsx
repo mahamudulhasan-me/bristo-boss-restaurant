@@ -29,27 +29,30 @@ const Shop = () => {
       <div className="mt-16">
         <div>
           <ul className="flex font-semibold justify-center items-center space-x-4 font-cinzel menu-tab mb-10">
-            <Link onClick={() => setMenuCategory("pizza")}>
+            <Link to={"/shop/pizza"} onClick={() => setMenuCategory("pizza")}>
               <li className={`${menuCategory === "pizza" && "active-tab"}`}>
                 Pizza
               </li>
             </Link>
-            <Link onClick={() => setMenuCategory("soup")}>
+            <Link to={"/shop/soup"} onClick={() => setMenuCategory("soup")}>
               <li className={`${menuCategory === "soup" && "active-tab"}`}>
                 Soup
               </li>
             </Link>
-            <Link onClick={() => setMenuCategory("dessert")}>
+            <Link
+              to={"/shop/dessert"}
+              onClick={() => setMenuCategory("dessert")}
+            >
               <li className={`${menuCategory === "dessert" && "active-tab"}`}>
                 Dessert
               </li>
             </Link>
-            <Link onClick={() => setMenuCategory("salad")}>
+            <Link to={"/shop/salad"} onClick={() => setMenuCategory("salad")}>
               <li className={`${menuCategory === "salad" && "active-tab"}`}>
                 Salad
               </li>
             </Link>
-            <Link onClick={() => setMenuCategory("drinks")}>
+            <Link to={"/shop/drinks"} onClick={() => setMenuCategory("drinks")}>
               <li className={`${menuCategory === "drinks" && "active-tab"}`}>
                 Drinks
               </li>

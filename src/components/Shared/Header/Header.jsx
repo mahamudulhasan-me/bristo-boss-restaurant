@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaAngleDown } from "react-icons/fa";
+import { FaAngleDown, FaCartPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
@@ -56,6 +56,14 @@ const Header = () => {
       <li>
         <Link>Our Shop</Link>
       </li>
+      <Link>
+        <FaCartPlus className="text-xl" />
+      </Link>
+      <Link to={"./login"}>
+        <button className="bg-yell px-3 py-2 rounded-md font-cinzel font-semibold">
+          Log in
+        </button>
+      </Link>
     </>
   );
   return (
@@ -94,8 +102,10 @@ const Header = () => {
             <span className="text-xl tracking-[0.3rem]">Restaurant</span>
           </Link>
         </div>
-        <div className="navbar-center hidden lg:flex">
-          <ul className="my-menu menu-horizontal space-x-2">{navItems}</ul>
+        <div className="navbar-center hidden lg:flex ">
+          <ul className="my-menu menu-horizontal space-x-2 flex items-center">
+            {navItems}
+          </ul>
         </div>
       </div>
     </div>
