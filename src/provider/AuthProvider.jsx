@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
@@ -11,17 +12,16 @@ import React, { createContext, useEffect, useState } from "react";
 import app from "../firebase/firebase.config";
 
 export const AuthContext = createContext();
-
+const auth = getAuth(app);
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [loader, setLoader] = useState(true);
-  const auth = getAuth(app);
+
   //   google provider
   const googleProvider = new GoogleAuthProvider();
 
   //   register new user
   const registerNewUser = (email, password) => {
-    setLoader(false);
     return createUserWithEmailAndPassword(auth, email, password);
   };
   //sign in with email password

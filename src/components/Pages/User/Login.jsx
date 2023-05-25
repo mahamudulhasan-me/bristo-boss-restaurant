@@ -1,11 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { LoadCanvasTemplate, loadCaptchaEnginge } from "react-simple-captcha";
+import { toast } from "react-toastify";
 import bg from "../../../assets/others/authentication.png";
 import login from "../../../assets/others/authentication2.png";
+import { AuthContext } from "../../../provider/AuthProvider";
 import SocialSignin from "./SocialSignin";
 
 const Login = () => {
+  const { logInWithEmailAndPassword } = useContext(AuthContext);
+  const handleLogin = () => {
+    logInWithEmailAndPassword().then((result) => {
+      const user = result.user;
+      toast.success(`Welcome ${user.displayName}`);
+    });
+  };
   useEffect(() => {
     loadCaptchaEnginge(6);
   }, []);
@@ -20,7 +29,7 @@ const Login = () => {
           <h1 className="text-center font-cinzel font-semibold text-4xl mb-5">
             Login
           </h1>
-          <form action="" className="w-3/5 mx-auto space-y-4">
+          <form onSubmit={handleLogin} className="w-3/5 mx-auto space-y-4">
             <div>
               <label htmlFor="name">Name</label> <br />
               <input

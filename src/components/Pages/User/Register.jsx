@@ -1,11 +1,56 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
+import { updateProfile } from "firebase/auth";
+import { toast } from "react-toastify";
 import bg from "../../../assets/others/authentication.png";
 import login from "../../../assets/others/authentication2.png";
+import { AuthContext } from "../../../provider/AuthProvider";
 import SocialSignin from "./SocialSignin";
 
 const Register = () => {
+  const { registerNewUser } = useContext(AuthContext);
+  const [passError, setPassError] = useState("");
+  const [solidPassword, setSolidPassword] = useState("");
+  const passwordHandle = (e) => {
+    setPassError("");
+    const password = e.target.value;
+    if (!/(?=.*[a-z])/.test(password)) {
+      setPassError("At least one  letter is required");
+    } else if (!/(?=.*[A-Z])/.test(password)) {
+      setPassError("At lest one capital letter is required");
+    } else if (!/(?=.*[0-9])/.test(password)) {
+      setPassError("At least one digit is required");
+    } else if (!/(?=.*[!@#$%^&*])/.test(password)) {
+      setPassError("At least one special character is required");
+    } else if (!/(?=.{6,})/.test(password)) {
+      setPassError("Password must be 6 characters long");
+    } else {
+      setSolidPassword(password);
+    }
+  };
+  const navigate = useNavigate();
+  const handleEmailSignIn = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.name.value;
+    const email = form.email.value;
+
+    console.log({ name, email, solidPassword });
+    if (!passError) {
+      registerNewUser(name, solidPassword)
+        .then((result) => {
+          const user = result.user;
+          updateProfile(user, { displayName: name })
+            .then(() => {
+              navigate("/");
+              toast.success("Account created successfully");
+            })
+            .catch((err) => setPassError(err.message));
+        })
+        .catch((err) => setPassError(err.message));
+    }
+  };
   return (
     <div
       style={{ backgroundImage: `url(${bg})` }}
@@ -15,25 +60,20 @@ const Register = () => {
         <img src={login} alt="" className="w-1/2" />
         <div className="login w-1/2 mx-auto">
           <h1 className="text-center font-cinzel font-semibold text-4xl mb-5">
-            Login
+            Sign up
           </h1>
-          <form action="" className="w-3/5 mx-auto space-y-4">
+          <form
+            onSubmit={handleEmailSignIn}
+            className="w-3/5 mx-auto space-y-4"
+          >
             <div>
               <label htmlFor="name">Name</label> <br />
               <input
+                required
                 type="text"
                 name="name"
                 id="name"
-                placeholder="Enter Email"
-              />
-            </div>
-            <div>
-              <label htmlFor="password">Password</label> <br />
-              <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="Enter Password"
+                placeholder="Enter your name"
               />
             </div>
             <div>
@@ -45,7 +85,17 @@ const Register = () => {
                 placeholder="Enter Email"
               />
             </div>
-
+            <div>
+              <label htmlFor="password">Password</label> <br />
+              <input
+                onChange={passwordHandle}
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Enter Password"
+              />
+            </div>
+            <p className="text-rose-500">{passError}</p>
             <button className="bg-yell rounded-sm font-cinzel py-2 font-semibold w-full text-white mt-20">
               log in
             </button>
