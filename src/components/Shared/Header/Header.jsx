@@ -1,8 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaAngleDown, FaCartPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../../provider/AuthProvider";
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
+  const { user, logOut } = useContext(AuthContext);
+  console.log({ user });
+  const handleLogout = () => {
+    logOut()
+      .then(() => toast.warning("Logged out"))
+      .catch((err) => toast.error(err.message));
+  };
   const navItems = (
     <>
       <li>
@@ -59,11 +68,29 @@ const Header = () => {
       <Link>
         <FaCartPlus className="text-xl" />
       </Link>
-      <Link to={"./login"}>
-        <button className="bg-yell px-3 py-2 rounded-md font-cinzel font-semibold">
-          Log in
-        </button>
-      </Link>
+      {user ? (
+        <>
+          <div className="w-10 h-10 ring rounded-full ring-yell">
+            <img
+              src={user?.photoURL}
+              alt=""
+              title={user?.displayName}
+              className="w-full rounded-full"
+            />
+          </div>
+          <Link onClick={handleLogout}>
+            <button className="bg-yell px-3 py-2 rounded-md font-cinzel font-semibold">
+              Log out
+            </button>
+          </Link>
+        </>
+      ) : (
+        <Link to={"./login"}>
+          <button className="bg-yell px-3 py-2 rounded-md font-cinzel font-semibold">
+            Log in
+          </button>
+        </Link>
+      )}
     </>
   );
   return (
