@@ -9,7 +9,7 @@ import { AuthContext } from "../../../provider/AuthProvider";
 import SocialSignin from "./SocialSignin";
 
 const Register = () => {
-  const { registerNewUser } = useContext(AuthContext);
+  const { createNewUser } = useContext(AuthContext);
   const [passError, setPassError] = useState("");
   const [solidPassword, setSolidPassword] = useState("");
   const passwordHandle = (e) => {
@@ -30,27 +30,28 @@ const Register = () => {
     }
   };
   const navigate = useNavigate();
-  const handleEmailSignIn = (e) => {
+
+  const handleCreateUser = (e) => {
     e.preventDefault();
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
-
-    console.log({ name, email, solidPassword });
     if (!passError) {
-      registerNewUser(name, solidPassword)
+      createNewUser(email, solidPassword)
         .then((result) => {
           const user = result.user;
           updateProfile(user, { displayName: name })
             .then(() => {
               navigate("/");
-              toast.success("Account created successfully");
+              toast.success("User created successfully");
             })
             .catch((err) => setPassError(err.message));
         })
-        .catch((err) => setPassError(err.message));
+        .catch((error) => setPassError(error.message));
+      console.log({ name, email, solidPassword });
     }
   };
+
   return (
     <div
       style={{ backgroundImage: `url(${bg})` }}
@@ -62,10 +63,7 @@ const Register = () => {
           <h1 className="text-center font-cinzel font-semibold text-4xl mb-5">
             Sign up
           </h1>
-          <form
-            onSubmit={handleEmailSignIn}
-            className="w-3/5 mx-auto space-y-4"
-          >
+          <form onSubmit={handleCreateUser} className="w-3/5 mx-auto space-y-4">
             <div>
               <label htmlFor="name">Name</label> <br />
               <input
@@ -96,7 +94,10 @@ const Register = () => {
               />
             </div>
             <p className="text-rose-500">{passError}</p>
-            <button className="bg-yell rounded-sm font-cinzel py-2 font-semibold w-full text-white mt-20">
+            <button
+              type="submit"
+              className="bg-yell rounded-sm font-cinzel py-2 font-semibold w-full text-white mt-20"
+            >
               log in
             </button>
             <p className="text-yell text-xs text-center font-semibold">

@@ -20,21 +20,21 @@ const AuthProvider = ({ children }) => {
   //   google provider
   const googleProvider = new GoogleAuthProvider();
 
-  //   register new user
-  const registerNewUser = (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password);
-  };
-  //sign in with email password
-  const logInWithEmailAndPassword = (email, password) => {
-    setLoader(false);
-    return signInWithEmailAndPassword(auth, email, password);
-  };
   //   sign in with google
   const logInWithGoogle = () => {
     setLoader(false);
     return signInWithPopup(auth, googleProvider);
   };
 
+  //create new user
+  const createNewUser = (email, password) => {
+    return createUserWithEmailAndPassword(auth, email, password);
+  };
+
+  //sign in with email and password
+  const logInWithEmailAndPassword = (email, password) => {
+    return signInWithEmailAndPassword(auth, email, password);
+  };
   //   check user login or not
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -49,7 +49,7 @@ const AuthProvider = ({ children }) => {
   };
   const authInfo = {
     user,
-    registerNewUser,
+    createNewUser,
     logInWithEmailAndPassword,
     logInWithGoogle,
     logOut,

@@ -1,6 +1,10 @@
-import React, { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { LoadCanvasTemplate, loadCaptchaEnginge } from "react-simple-captcha";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  LoadCanvasTemplateNoReload,
+  loadCaptchaEnginge,
+  validateCaptcha,
+} from "react-simple-captcha";
 import { toast } from "react-toastify";
 import bg from "../../../assets/others/authentication.png";
 import login from "../../../assets/others/authentication2.png";
@@ -9,15 +13,39 @@ import SocialSignin from "./SocialSignin";
 
 const Login = () => {
   const { logInWithEmailAndPassword } = useContext(AuthContext);
-  const handleLogin = () => {
-    logInWithEmailAndPassword().then((result) => {
-      const user = result.user;
-      toast.success(`Welcome ${user.displayName}`);
-    });
+  const [disable, setDisable] = useState(true);
+  const [error, setError] = useState("");
+
+  // verify captcha
+  const handleCaptcha = (e) => {
+    const captcha = e.target.value;
+    console.log(captcha);
+    if (validateCaptcha(captcha) == true) {
+      setDisable(false);
+    }
   };
+  // load captcha
   useEffect(() => {
     loadCaptchaEnginge(6);
   }, []);
+
+  const navigate = useNavigate();
+  // handle login
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    if (!disable) {
+      logInWithEmailAndPassword(email, password)
+        .then((result) => {
+          const user = result.user;
+          toast.success(`Welcome ${user.displayName}`);
+          navigate("/");
+        })
+        .catch((error) => setError(error.message));
+    }
+  };
   return (
     <div
       style={{ backgroundImage: `url(${bg})` }}
@@ -31,11 +59,11 @@ const Login = () => {
           </h1>
           <form onSubmit={handleLogin} className="w-3/5 mx-auto space-y-4">
             <div>
-              <label htmlFor="name">Name</label> <br />
+              <label htmlFor="email">Email</label> <br />
               <input
-                type="text"
-                name="name"
-                id="name"
+                type="email"
+                name="email"
+                id="email"
                 placeholder="Enter Email"
               />
             </div>
@@ -48,13 +76,22 @@ const Login = () => {
                 placeholder="Enter Password"
               />
             </div>
-            <div className="w-1/2">
+            <div>
               <label htmlFor="" className="text-xs">
-                <LoadCanvasTemplate />
+                <LoadCanvasTemplateNoReload />
               </label>
-              <input type="text" className="text-lg p-0" />
+              <input
+                type="text"
+                onBlur={handleCaptcha}
+                className="text-lg p-0 mt-3"
+              />
             </div>
-            <button className="bg-yell rounded-sm font-cinzel py-2 font-semibold w-full text-white mt-20">
+            <p className="text-rose-600">{error}</p>
+            <button
+              type="submit"
+              disabled={disable}
+              className={`bg-yell bg-opacity-100 rounded-sm font-cinzel py-2 font-semibold w-full text-white mt-20`}
+            >
               log in
             </button>
             <p className="text-yell text-xs text-center font-semibold">
