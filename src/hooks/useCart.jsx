@@ -13,7 +13,7 @@ const useCart = () => {
       return response.json();
     },
   });
-  return [refetch, cart];
+  return [cart, refetch];
 };
 
 export default useCart;

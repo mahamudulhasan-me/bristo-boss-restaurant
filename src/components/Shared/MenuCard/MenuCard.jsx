@@ -2,11 +2,13 @@ import React, { useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import useCart from "../../../hooks/useCart";
 import { AuthContext } from "../../../provider/AuthProvider";
 
 const MenuCard = ({ menuDetails }) => {
   const { user } = useContext(AuthContext);
   const { image, name, recipe, price, _id } = menuDetails;
+  const [, refetch] = useCart();
   const location = useLocation();
   const navigate = useNavigate();
   const handleAddToCart = () => {
@@ -23,6 +25,7 @@ const MenuCard = ({ menuDetails }) => {
         .then((data) => {
           if (data.insertedId) {
             toast.success(`${name} added to cart`);
+            refetch();
           }
         });
     } else {
