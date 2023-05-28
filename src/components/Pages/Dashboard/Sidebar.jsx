@@ -99,13 +99,19 @@ const Sidebar = () => {
                 </Link>
               </li>
               <li>
-                <Link className="flex items-center p-2  rounded-md">
+                <Link
+                  to={"/our-menu"}
+                  className="flex items-center p-2  rounded-md"
+                >
                   <MdRestaurantMenu size={24} />
                   <span>Menu</span>
                 </Link>
               </li>
               <li>
-                <Link className="flex items-center p-2  rounded-md">
+                <Link
+                  to={"/shop/pizza"}
+                  className="flex items-center p-2  rounded-md"
+                >
                   <FaShoppingBag size={24} />
                   <span>Shop</span>
                 </Link>

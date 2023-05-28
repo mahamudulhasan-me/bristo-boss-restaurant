@@ -69,12 +69,14 @@ const Header = () => {
         <Link>Our Shop</Link>
       </li>
 
-      <div className="indicator mx-2">
-        <span className="indicator-item badge badge-primary">
-          {cart.length || 0}
-        </span>
-        <FaCartPlus size={28} className="" />
-      </div>
+      <Link to={"/dashboard/my-cart"}>
+        <div className="indicator mx-2">
+          <span className="indicator-item badge badge-primary">
+            {cart.length || 0}
+          </span>
+          <FaCartPlus size={28} className="" />
+        </div>
+      </Link>
 
       {user ? (
         <>
