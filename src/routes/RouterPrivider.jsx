@@ -7,6 +7,7 @@ import Register from "../components/Pages/User/Register";
 import Shop from "../components/Shared/Shop/Shop";
 import Dashboard from "../layouts/Dashboard";
 import Main from "../layouts/Main";
+import ProtectedRoute from "../protectedRoute/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -37,11 +38,19 @@ const router = createBrowserRouter([
   },
   {
     path: "dashboard",
-    element: <Dashboard />,
+    element: (
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "my-cart",
-        element: <MyCart />,
+        element: (
+          <ProtectedRoute>
+            <MyCart />
+          </ProtectedRoute>
+        ),
       },
     ],
   },
