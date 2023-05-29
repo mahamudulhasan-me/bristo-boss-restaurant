@@ -27,7 +27,11 @@ const AdminNavItems = () => {
         icon={BsJournalBookmarkFill}
         name="Manage Booking"
       />
-      <DashboardNavItem to={"/dashboard"} icon={FaUsers} name="All Users" />
+      <DashboardNavItem
+        to={"/dashboard/all-user"}
+        icon={FaUsers}
+        name="All Users"
+      />
     </>
   );
 };

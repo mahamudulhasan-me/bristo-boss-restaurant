@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "../components/Home/Home";
+import AllUser from "../components/Pages/Dashboard/AllUser/AllUser";
 import MyCart from "../components/Pages/Dashboard/MyCart/MyCart";
 import OurMenu from "../components/Pages/OurMenu/OurMenu";
 import Login from "../components/Pages/User/Login";
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
             <MyCart />
           </ProtectedRoute>
         ),
+      },
+      {
+        path: "all-user",
+        element: <AllUser />,
       },
     ],
   },
