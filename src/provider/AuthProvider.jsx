@@ -16,36 +16,39 @@ export const AuthContext = createContext();
 const auth = getAuth(app);
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({});
-  const [loader, setLoader] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   //   google provider
   const googleProvider = new GoogleAuthProvider();
 
   //   sign in with google
   const logInWithGoogle = () => {
-    setLoader(false);
+    setLoading(false);
     return signInWithPopup(auth, googleProvider);
   };
 
   //create new user
   const createNewUser = (email, password) => {
+    setLoading(false);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
   //sign in with email and password
   const logInWithEmailAndPassword = (email, password) => {
+    setLoading(false);
     return signInWithEmailAndPassword(auth, email, password);
   };
   //   check user login or not
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      setLoader(false);
+
       if (currentUser) {
         axios
           .post("http://localhost:5000/jwt", { uid: currentUser?.uid })
           .then((data) => {
             localStorage.setItem("access-token", data.data);
+            setLoading(false);
           });
       } else {
         localStorage.removeItem("access-token");
@@ -59,7 +62,7 @@ const AuthProvider = ({ children }) => {
   };
   const authInfo = {
     user,
-    loader,
+    loading,
     createNewUser,
     logInWithEmailAndPassword,
     logInWithGoogle,
