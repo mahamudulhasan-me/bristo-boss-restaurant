@@ -1,16 +1,47 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { FaUtensils } from "react-icons/fa";
+import Swal from "sweetalert2";
+import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import SectionHeader from "../../../Shared/SectionHeader/SectionHeader";
 
 const AddItem = () => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const { register, handleSubmit, reset } = useForm();
+
+  const [axiosSecure] = useAxiosSecure();
+
+  const onSubmit = (data) => {
+    const { name, image, category, price, recipe } = data;
+    const imgbbURL = `https://api.imgbb.com/1/upload?key=2d2ae9c5dd9e1059fbd193b5ec64e3fe`;
+    let formData = new FormData();
+    formData.append("image", data.image[0]);
+
+    fetch(imgbbURL, { method: "POST", body: formData })
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.success) {
+          const newMenu = {
+            name,
+            image: result.data.display_url,
+            category,
+            price: parseFloat(price),
+            recipe,
+          };
+          axiosSecure.post(`/menu`, newMenu).then((result) => {
+            if (result.data.insertedId) {
+              reset();
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Your work has been saved",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+          });
+        }
+      });
+  };
   return (
     <div className="z-50">
       <SectionHeader title={"ADD AN ITEM"} subTitle={"What's New?"} />
@@ -30,10 +61,11 @@ const AddItem = () => {
           <div>
             <label htmlFor="">Category*</label> <br />
             <select
+              defaultValue={"Dessert"}
               {...register("category", { required: true })}
               className="select select-bordered w-full "
             >
-              <option disabled selected>
+              <option value={"n/a"} disabled selected>
                 Category
               </option>
               <option value="dessert">Dessert</option>
