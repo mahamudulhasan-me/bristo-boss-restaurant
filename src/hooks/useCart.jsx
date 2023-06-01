@@ -9,9 +9,8 @@ const useCart = () => {
   const { refetch, data: cart = [] } = useQuery({
     queryKey: ["carts", user?.uid],
     enabled: !loading,
-
     queryFn: async () => {
-      const response = await axiosSecure(`/carts?uid=${user?.uid}`);
+      const response = await axiosSecure.get(`/carts?uid=${user?.uid}`);
       return response.data;
     },
   });
