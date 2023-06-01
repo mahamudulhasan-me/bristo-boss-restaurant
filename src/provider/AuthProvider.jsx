@@ -23,19 +23,16 @@ const AuthProvider = ({ children }) => {
 
   //   sign in with google
   const logInWithGoogle = () => {
-    setLoading(false);
     return signInWithPopup(auth, googleProvider);
   };
 
   //create new user
   const createNewUser = (email, password) => {
-    setLoading(false);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
   //sign in with email and password
   const logInWithEmailAndPassword = (email, password) => {
-    setLoading(false);
     return signInWithEmailAndPassword(auth, email, password);
   };
   //   check user login or not
@@ -44,6 +41,7 @@ const AuthProvider = ({ children }) => {
       setUser(currentUser);
 
       if (currentUser) {
+        setLoading(true);
         axios
           .post("http://localhost:5000/jwt", { uid: currentUser?.uid })
           .then((data) => {
@@ -53,6 +51,7 @@ const AuthProvider = ({ children }) => {
       } else {
         localStorage.removeItem("access-token");
       }
+
       return () => unsubscribe;
     });
   }, []);

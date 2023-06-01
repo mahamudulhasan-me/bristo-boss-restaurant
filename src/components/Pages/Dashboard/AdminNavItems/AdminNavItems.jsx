@@ -16,7 +16,11 @@ const AdminNavItems = () => {
         icon={AiTwotoneHome}
         name="Admin Home"
       />
-      <DashboardNavItem to={"/dashboard"} icon={FaUtensils} name="Add Item" />
+      <DashboardNavItem
+        to={"/dashboard/add-item"}
+        icon={FaUtensils}
+        name="Add Item"
+      />
       <DashboardNavItem
         to={"/dashboard"}
         icon={TfiMenuAlt}

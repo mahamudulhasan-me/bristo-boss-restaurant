@@ -15,7 +15,7 @@ const Sidebar = () => {
         {/* <!-- Page content here --> */}
         <label
           htmlFor="my-drawer-2"
-          className="btn btn-primary drawer-button lg:hidden"
+          className="btn btn-primary drawer-button lg:hidden z-50"
         >
           Open drawer
         </label>
@@ -24,7 +24,7 @@ const Sidebar = () => {
         <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
 
         {/* <!-- Sidebar content here --> */}
-        <div className="h-full p-3 space-y-2 w-60 text-gray-900 font-cinzel bg-yell font-semibold">
+        <div className="h-full z-30  p-3 space-y-2 w-60 text-gray-900 font-cinzel bg-yell font-semibold">
           <div className=" p-2">
             <Link className="font-cinzel">
               <span className="font-semibold uppercase text-2xl">
