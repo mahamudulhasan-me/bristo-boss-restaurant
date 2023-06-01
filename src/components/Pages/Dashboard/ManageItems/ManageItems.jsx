@@ -2,11 +2,13 @@ import React from "react";
 import { Helmet } from "react-helmet-async";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import useMenu from "../../../../hooks/useMenu";
 import SectionHeader from "../../../Shared/SectionHeader/SectionHeader";
 
 const ManageItems = () => {
   const [menu, loader, refetch] = useMenu();
+  const [axiosSecure] = useAxiosSecure();
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -18,16 +20,12 @@ const ManageItems = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:5000/carts/${id}`, {
-          method: "DELETE",
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.deletedCount > 0) {
-              refetch();
-              Swal.fire("Deleted!", "Your item has been deleted.", "success");
-            }
-          });
+        axiosSecure.delete(`/menu/${id}`).then((result) => {
+          if (result.data.deletedCount > 0) {
+            refetch();
+            Swal.fire("Deleted!", "Your item has been deleted.", "success");
+          }
+        });
       }
     });
   };
@@ -36,7 +34,7 @@ const ManageItems = () => {
       <Helmet>
         <title>My Cart | Bristo Boss</title>
       </Helmet>
-      <SectionHeader title="PAYMENT HISTORY" subTitle="At a glance!" />
+      <SectionHeader title="Manage Items" subTitle="Hurry Up!" />
       <div className="bg-white p-5">
         <div className="flex text-slate-950  mb-3 font-semibold font-cinzel justify-between items-center ">
           <p className="text-2xl">Total Order: {menu.length}</p>
