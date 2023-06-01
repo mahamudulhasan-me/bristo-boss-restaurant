@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Home from "../components/Home/Home";
 import AddItem from "../components/Pages/Dashboard/AddItems/AddItem";
 import AllUser from "../components/Pages/Dashboard/AllUser/AllUser";
+import ManageItems from "../components/Pages/Dashboard/ManageItems/ManageItems";
 import MyCart from "../components/Pages/Dashboard/MyCart/MyCart";
 import OurMenu from "../components/Pages/OurMenu/OurMenu";
 import Login from "../components/Pages/User/Login";
@@ -60,6 +61,14 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <AddItem />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manage-items",
+        element: (
+          <AdminRoute>
+            <ManageItems />
           </AdminRoute>
         ),
       },

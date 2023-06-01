@@ -22,7 +22,7 @@ const AdminNavItems = () => {
         name="Add Item"
       />
       <DashboardNavItem
-        to={"/dashboard"}
+        to={"/dashboard/manage-items"}
         icon={TfiMenuAlt}
         name="Manage Items"
       />
