@@ -4,6 +4,7 @@ import AddItem from "../components/Pages/Dashboard/AddItems/AddItem";
 import AllUser from "../components/Pages/Dashboard/AllUser/AllUser";
 import ManageItems from "../components/Pages/Dashboard/ManageItems/ManageItems";
 import MyCart from "../components/Pages/Dashboard/MyCart/MyCart";
+import Payment from "../components/Pages/Dashboard/Payment/Payment";
 import OurMenu from "../components/Pages/OurMenu/OurMenu";
 import Login from "../components/Pages/User/Login";
 import Register from "../components/Pages/User/Register";
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
             <ManageItems />
           </AdminRoute>
         ),
+      },
+      {
+        path: "payment",
+        element: <Payment />,
       },
     ],
   },
