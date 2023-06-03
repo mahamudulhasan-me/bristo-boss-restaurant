@@ -43,9 +43,14 @@ const MyCart = () => {
       <div className="bg-white p-5">
         <div className="flex text-slate-950  mb-3 font-semibold font-cinzel justify-between items-center ">
           <p className="text-2xl">Total Order: {cart.length}</p>{" "}
-          <p className="text-2xl">Total Price: ${totalPrice.toFixed(2)}</p>{" "}
+          <p className="text-2xl">
+            Total Price: ${parseFloat(totalPrice.toFixed(2))}
+          </p>{" "}
           <Link to={"/dashboard/payment"}>
-            <button className="bg-yell py-2 px-3 rounded-lg text-white">
+            <button
+              disabled={!totalPrice && true}
+              className="bg-yell py-2 px-3 rounded-lg text-white"
+            >
               Pay
             </button>
           </Link>

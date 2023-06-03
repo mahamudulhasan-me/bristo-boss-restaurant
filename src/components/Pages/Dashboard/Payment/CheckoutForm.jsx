@@ -1,8 +1,22 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import React from "react";
-const CheckoutForm = () => {
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import useAuth from "../../../../hooks/useAuth";
+import useAxiosSecure from "../../../../hooks/useAxiosSecure";
+const CheckoutForm = ({ price }) => {
+  const { user } = useAuth();
   const stripe = useStripe();
   const elements = useElements();
+  const [axiosSecure] = useAxiosSecure();
+  const [clientSecret, setClientSecret] = useState("");
+  const [transactionId, setTransactionId] = useState();
+  const [processing, setProcessing] = useState(false);
+
+  useEffect(() => {
+    axiosSecure.post("/create-payment-intent", { price }).then((result) => {
+      setClientSecret(result.data.clientSecret);
+    });
+  }, [price, axiosSecure]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,9 +29,41 @@ const CheckoutForm = () => {
     if (card == null) {
       return;
     }
+    setProcessing(true);
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: "card",
+      card,
+    });
+    if (error) {
+      toast.error(error.message);
+    } else {
+      console.log(paymentMethod);
+    }
+
+    const { paymentIntent, error: confirmError } =
+      await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: card,
+          billing_details: {
+            email: user?.email || "Unknown",
+            name: user?.name || "Anonymous",
+          },
+        },
+      });
+
+    if (confirmError) {
+      toast.error(confirmError.message);
+    }
+    setProcessing(false);
+    if (paymentIntent.status === "succeeded") {
+      toast.success("Payment Success!");
+      setTransactionId(paymentIntent.id);
+      // TODO
+    }
   };
+
   return (
-    <div>
+    <div className="w-4/5 mx-auto bg-white p-10">
       <form onSubmit={handleSubmit}>
         <CardElement
           options={{
@@ -35,9 +81,15 @@ const CheckoutForm = () => {
             },
           }}
         />
-        <button type="submit" disabled={!stripe}>
-          Pay
-        </button>
+        <div className="w-1/2 mx-auto mt-10">
+          <button
+            type="submit"
+            className="btn btn-primary w-full  btn-sm "
+            disabled={!stripe || !clientSecret || processing}
+          >
+            Pay
+          </button>
+        </div>
       </form>
     </div>
   );
