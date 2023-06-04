@@ -13,13 +13,12 @@ const Payment = () => {
   const totalPrice = cart.reduce((pre, cur) => pre + cur.price, 0);
   const totalAmount = parseFloat(totalPrice.toFixed(2));
 
-
   return (
     <div>
       <SectionHeader title={"Payment"} subTitle={"O Teka Teka"} />
       <div>
         <Elements stripe={stripePromise}>
-          <CheckoutForm price={totalAmount} />
+          <CheckoutForm cart={cart} price={totalAmount} />
         </Elements>
       </div>
     </div>
